@@ -2,17 +2,24 @@ package ro.msg.learning.shop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.domain.Location;
 import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.ProductCategory;
+import ro.msg.learning.shop.domain.key.StockId;
 import ro.msg.learning.shop.dto.ProductCategoryDto;
 import ro.msg.learning.shop.dto.ProductDto;
+import ro.msg.learning.shop.dto.StockDto;
+import ro.msg.learning.shop.exception.LocationNotFoundException;
 import ro.msg.learning.shop.exception.ProductCategoryNotFoundException;
 import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.mapper.ProductCategoryMapper;
 import ro.msg.learning.shop.mapper.ProductMapper;
+import ro.msg.learning.shop.mapper.StockMapper;
 import ro.msg.learning.shop.message.Messages;
+import ro.msg.learning.shop.repository.LocationRepository;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
+import ro.msg.learning.shop.repository.StockRepository;
 import ro.msg.learning.shop.service.ProductService;
 
 import java.util.ArrayList;
@@ -27,22 +34,40 @@ public class ProductServiceImpl implements ProductService {
     ProductRepository productRepository;
     @Autowired
     ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    StockRepository stockRepository;
+    @Autowired
+    LocationRepository locationRepository;
+
 
    @Autowired
    ProductMapper productMapper;
-
-
-
+   @Autowired
+   StockMapper stockMapper;
+   @Autowired
 
     @Override
-    public ProductDto createProduct(ProductDto productDto, String productCategoryName) throws ProductCategoryNotFoundException {
+    public ProductDto createProduct(ProductDto productDto, String productCategoryName,String locationName,Integer quantity) throws ProductCategoryNotFoundException, LocationNotFoundException {
 
         ProductCategory productCategory=productCategoryRepository.findOneByNameIs(productCategoryName);
         if (productCategory==null){
             throw new ProductCategoryNotFoundException();
         }
+        Location foundLocation=locationRepository.findOneByNameIs(locationName);
+        if (foundLocation==null){
+            throw new LocationNotFoundException();
+        }
         productDto.setCategory(productCategory.getProductCategoryId());
-        productRepository.save(productMapper.toEntity(productDto));
+        Product savedProduct=productRepository.save(productMapper.toEntity(productDto));
+        StockId stockId=StockId.builder()
+                .productId(savedProduct.getProductId())
+                .locationId(foundLocation.getLocationId())
+                .build();
+        StockDto stockDto= StockDto.builder()
+                .stockId(stockId)
+                .quantity(quantity)
+                .build();
+        stockRepository.save(stockMapper.toEntity(stockDto));
         return productDto;
     }
 

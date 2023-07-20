@@ -47,6 +47,8 @@ public class Product{
     @JoinColumn(name="id")
     private ProductCategory productCategory;
 
+    @OneToMany(mappedBy = "product")
+    Set<Stock> stock;
     public Product(){
 
     }

@@ -4,6 +4,7 @@ package ro.msg.learning.shop.domain.key;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ro.msg.learning.shop.domain.Location;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Embeddable
 @Data
+@Builder
 public class StockId implements Serializable {
 
     @Column(name="product")

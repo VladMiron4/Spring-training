@@ -23,6 +23,9 @@ public class Order{
     @UuidGenerator
     private UUID orderId;
 
+    @Column(name="customer")
+    private UUID customerId;
+
     @NotNull
     @Column(name="createdat")
     private LocalDate date;

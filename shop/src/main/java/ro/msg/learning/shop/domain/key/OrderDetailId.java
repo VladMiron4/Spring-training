@@ -15,10 +15,13 @@ import java.util.UUID;
 @Data
 public class OrderDetailId implements Serializable {
 
-    @Column(name="product_id")
+    @Column(name="product")
     private UUID productId;
-    @Column(name="order_id")
+    @Column(name="order")
     private UUID orderId;
+    @Column(name="location")
+    private UUID locationId;
+
 
     @Override
     public boolean equals(Object obj){
@@ -32,11 +35,14 @@ public class OrderDetailId implements Serializable {
         if (!stockObject.productId.equals(this.productId)){
             return false;
         }
+        if (!stockObject.locationId.equals(this.locationId)){
+            return false;
+        }
         return true;
     }
     @Override
     public int hashCode(){
-        return Objects.hash(productId,orderId);
+        return Objects.hash(productId,orderId,locationId);
     }
 
 }

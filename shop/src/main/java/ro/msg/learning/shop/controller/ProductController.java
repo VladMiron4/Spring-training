@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dto.ProductDto;
+import ro.msg.learning.shop.exception.LocationNotFoundException;
 import ro.msg.learning.shop.exception.ProductCategoryNotFoundException;
 import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.service.ProductService;
@@ -21,9 +22,8 @@ public class ProductController {
    private ProductService productService;
 
     @PostMapping("/new")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody @Validated ProductDto productDto,@RequestParam String productCategoryName) throws ProductCategoryNotFoundException {
-
-        return new ResponseEntity<ProductDto>(productService.createProduct(productDto,productCategoryName), HttpStatus.OK);
+    public ResponseEntity<ProductDto> createProduct(@RequestBody @Validated ProductDto productDto,@RequestParam String productCategoryName,@RequestParam String locationName,@RequestParam Integer quantity) throws ProductCategoryNotFoundException, LocationNotFoundException {
+        return new ResponseEntity<ProductDto>(productService.createProduct(productDto,productCategoryName,locationName,quantity), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable("id") UUID productId) throws ProductNotFoundException {
