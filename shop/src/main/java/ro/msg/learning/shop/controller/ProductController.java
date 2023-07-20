@@ -37,5 +37,4 @@ public class ProductController {
     public String putProduct(@PathVariable ("id") UUID productId, @RequestBody @Validated ProductDto productDto) throws ProductNotFoundException {
         return productService.patchProduct(productId,productDto);
     }
-
 }
