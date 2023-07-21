@@ -9,7 +9,7 @@ EmailAddress  VARCHAR(255),
 PRIMARY KEY(Id)
 );
 
-CREATE TABLE  IF NOT EXISTS "order"   (
+CREATE TABLE  IF NOT EXISTS "order"(
 Id UUID NOT NULL,
 Customer UUID NOT NULL REFERENCES Customer(Id),
 CreatedAt  DATE,
@@ -60,9 +60,9 @@ PRIMARY KEY (Product,Location)
 
 CREATE TABLE  IF NOT EXISTS OrderDetail
 (
-"order" UUID NOT NULL REFERENCES "order"(Id),
-Product UUID NOT NULL REFERENCES Product(Id),
-ShippedFrom UUID NOT NULL REFERENCES Location(ID),
+"order" UUID  NOT NULL REFERENCES "order"(Id),
+Product UUID  NOT NULL REFERENCES Product(Id),
+ShippedFrom UUID  REFERENCES Location(ID),
 Quantity INTEGER,
 PRIMARY KEY("order",Product)
 );

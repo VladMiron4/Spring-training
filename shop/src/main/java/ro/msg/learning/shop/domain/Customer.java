@@ -1,48 +1,48 @@
 package ro.msg.learning.shop.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
-@Table(name="customer")
+@Getter
+@Setter
+@Table(name = "customer")
 @AllArgsConstructor
 @Builder
 public class Customer {
 
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @UuidGenerator
     private UUID customerId;
 
     @NotNull
-    @Column(name="firstname")
+    @Column(name = "firstname")
     private String firstName;
 
     @NotNull
-    @Column(name="lastname")
+    @Column(name = "lastname")
     private String lastName;
 
     @NotNull
-    @Column(name="username")
+    @Column(name = "username")
     private String userName;
 
     @NotNull
-    @Column(name="emailaddress")
+    @Column(name = "emailaddress")
     private String email;
 
     @NotNull
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
 
-    @OneToOne
-    @JoinColumn(name="id")
-    private Order order;
+    @OneToMany
+    @JoinColumn(name = "id")
+    private List<Order> order;
 
 }

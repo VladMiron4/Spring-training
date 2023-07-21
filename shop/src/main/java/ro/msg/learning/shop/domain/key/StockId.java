@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ro.msg.learning.shop.domain.Location;
-import ro.msg.learning.shop.domain.Product;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,27 +19,25 @@ import java.util.UUID;
 @Builder
 public class StockId implements Serializable {
 
-    @Column(name="product")
+    @Column(name = "product")
     private UUID productId;
-    @Column(name="location")
+    @Column(name = "location")
     private UUID locationId;
 
-@Override
-    public boolean equals(Object obj){
-    if (this.getClass() != obj.getClass()) {
-        return false;
+    @Override
+    public boolean equals(Object obj) {
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        StockId stockObject = (StockId) obj;
+        if (!stockObject.locationId.equals(this.locationId)) {
+            return false;
+        }
+        return stockObject.productId.equals(this.productId);
     }
-    StockId stockObject=(StockId) obj;
-    if (!stockObject.locationId.equals(this.locationId)){
-        return false;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, locationId);
     }
-    if (!stockObject.productId.equals(this.productId)){
-        return false;
-    }
-    return true;
-}
-@Override
-    public int hashCode(){
-    return Objects.hash(productId,locationId);
-}
 }

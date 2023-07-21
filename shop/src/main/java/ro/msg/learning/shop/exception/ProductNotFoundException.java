@@ -1,7 +1,7 @@
 package ro.msg.learning.shop.exception;
 
 public class ProductNotFoundException extends Exception {
-    public ProductNotFoundException(){
+    public ProductNotFoundException() {
         super("Product was not found");
     }
 }

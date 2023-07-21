@@ -11,16 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 import ro.msg.learning.shop.dto.CustomerDto;
 import ro.msg.learning.shop.service.CustomerService;
 
-@RequestMapping("/customer")
+@RequestMapping("/customers")
 @Validated
 @RestController
+
 public class CustomerController {
 
-    @Autowired
-    CustomerService customerService;
+    private final CustomerService customerService;
+    public CustomerController(CustomerService customerService) {
+        this.customerService=customerService;
+    }
 
     @PostMapping
-    public ResponseEntity<CustomerDto>createCustomer(@RequestBody @Validated CustomerDto customerDto){
+    public ResponseEntity<CustomerDto> post(@RequestBody @Validated CustomerDto customerDto) {
         return new ResponseEntity<>(customerService.createCustomer(customerDto), HttpStatus.OK);
     }
 }

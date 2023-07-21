@@ -6,7 +6,7 @@ import ro.msg.learning.shop.dto.CustomerDto;
 
 @Component
 public class CustomerMapper {
-    public CustomerDto toDto(Customer customer){
+    public CustomerDto toDto(Customer customer) {
         return CustomerDto.builder()
                 .customerId(customer.getCustomerId())
                 .firstName(customer.getFirstName())
@@ -16,7 +16,8 @@ public class CustomerMapper {
                 .userName(customer.getUserName())
                 .build();
     }
-    public Customer toEntity(CustomerDto customerDto){
+
+    public Customer toEntity(CustomerDto customerDto) {
         return Customer.builder()
                 .customerId(customerDto.getCustomerId())
                 .firstName(customerDto.getFirstName())

@@ -1,8 +1,10 @@
 package ro.msg.learning.shop.domain.key;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
@@ -12,32 +14,15 @@ import java.util.UUID;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Data
 public class OrderDetailId implements Serializable {
 
-    @Column(name="product")
+    @Column(name = "product")
     private UUID productId;
-    @Column(name="order")
+    @Column(name = "order")
     private UUID orderId;
 
 
-    @Override
-    public boolean equals(Object obj){
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        OrderDetailId stockObject=(OrderDetailId) obj;
-        if (!stockObject.orderId.equals(this.orderId)){
-            return false;
-        }
-        if (!stockObject.productId.equals(this.productId)){
-            return false;
-        }
-        return true;
-    }
-    @Override
-    public int hashCode(){
-        return Objects.hash(productId,orderId);
-    }
 
 }

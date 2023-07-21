@@ -1,12 +1,12 @@
 package ro.msg.learning.shop.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class CreateCustomerDto {
     private String firstName;
     private String lastName;

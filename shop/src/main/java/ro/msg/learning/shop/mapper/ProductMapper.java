@@ -6,7 +6,7 @@ import ro.msg.learning.shop.dto.ProductDto;
 
 @Component
 public class ProductMapper {
-    public ProductDto toDto(Product product){
+    public ProductDto toDto(Product product) {
 
         return ProductDto.builder()
                 .productId(product.getProductId())
@@ -18,8 +18,9 @@ public class ProductMapper {
                 .weight(product.getWeight())
                 .build();
     }
+
     public Product toEntity(ProductDto productDto) {
-        return  Product.builder()
+        return Product.builder()
                 .productId(productDto.getProductId())
                 .category(productDto.getCategory())
                 .name(productDto.getName())

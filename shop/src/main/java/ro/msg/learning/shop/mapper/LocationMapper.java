@@ -7,7 +7,7 @@ import ro.msg.learning.shop.dto.LocationDto;
 @Component
 public class LocationMapper {
 
-    public LocationDto toDto(Location location){
+    public LocationDto toDto(Location location) {
         return LocationDto.builder()
                 .addressCounty(location.getAddressCounty())
                 .name(location.getName())
@@ -17,7 +17,8 @@ public class LocationMapper {
                 .addressStreet(location.getAddressStreet())
                 .build();
     }
-    public Location toEntity(LocationDto locationDto){
+
+    public Location toEntity(LocationDto locationDto) {
         return Location.builder()
                 .addressCounty(locationDto.getAddressCounty())
                 .name(locationDto.getName())

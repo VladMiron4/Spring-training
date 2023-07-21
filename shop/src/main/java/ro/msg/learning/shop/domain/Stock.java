@@ -1,16 +1,14 @@
 package ro.msg.learning.shop.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import ro.msg.learning.shop.domain.key.StockId;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name="stock")
+@Table(name = "stock")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,16 +18,16 @@ public class Stock {
     private StockId Id;
 
     @NotNull
-    @Column(name="quantity")
+    @Column(name = "quantity")
     private Integer quantity;
 
     @ManyToOne
     @MapsId("locationId")
-    @JoinColumn(name="location")
+    @JoinColumn(name = "location")
     private Location location;
 
     @ManyToOne
     @MapsId(value = "productId")
-    @JoinColumn(name="product")
+    @JoinColumn(name = "product")
     private Product product;
 }

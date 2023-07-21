@@ -7,7 +7,7 @@ import ro.msg.learning.shop.dto.StockDto;
 @Component
 public class StockMapper {
 
-    public Stock toEntity(StockDto stockDto){
+    public Stock toEntity(StockDto stockDto) {
         return Stock.builder()
                 .Id(stockDto.getStockId())
                 .quantity(stockDto.getQuantity())

@@ -8,8 +8,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductCategoryDto {
-    private UUID productCategoryId;
-    private String name;
-    private String description;
+@Builder
+public class OrderProductDto {
+    private UUID productId;
+    private Integer quantity;
 }

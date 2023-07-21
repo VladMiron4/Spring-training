@@ -7,7 +7,7 @@ import ro.msg.learning.shop.dto.OrderDto;
 @Component
 public class OrderMapper {
 
-    public OrderDto toDto(Order order){
+    public OrderDto toDto(Order order) {
         return OrderDto.builder()
                 .orderId(order.getOrderId())
                 .addressCity(order.getAddressCity())
@@ -18,7 +18,8 @@ public class OrderMapper {
                 .date(order.getDate())
                 .build();
     }
-    public Order toEntity(OrderDto orderDto){
+
+    public Order toEntity(OrderDto orderDto) {
         return Order.builder()
                 .orderId(orderDto.getOrderId())
                 .addressCity(orderDto.getAddressCity())

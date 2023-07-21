@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.controller;
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,27 +13,33 @@ import ro.msg.learning.shop.service.ProductCategoryService;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("/product/category")
+@RequestMapping("/product/categories")
 @Validated
 @RestController
 public class ProductCategoryController {
 
-    @Autowired
+
     ProductCategoryService productCategoryService;
-    @PostMapping("/new")
-    public ResponseEntity<ProductCategoryDto> createProductCategory(@RequestBody @Validated ProductCategoryDto productCategoryDto){
+    public ProductCategoryController(ProductCategoryService productCategoryService){
+        this.productCategoryService=productCategoryService;
+    }
+    @PostMapping
+    public ResponseEntity<ProductCategoryDto> create(@RequestBody @Validated ProductCategoryDto productCategoryDto) {
         return new ResponseEntity<>(productCategoryService.createProductCategory(productCategoryDto), HttpStatus.OK);
     }
+
     @GetMapping
-    public ResponseEntity<List<ProductCategoryDto>>getAllProductCategories(){
-        return new ResponseEntity<>(productCategoryService.findAllProductCategories(),HttpStatus.OK);
+    public ResponseEntity<List<ProductCategoryDto>> getAll() {
+        return new ResponseEntity<>(productCategoryService.findAllProductCategories(), HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public String deleteProductCategory(@PathVariable("id") UUID productCategoryId) throws ProductCategoryNotFoundException {
-        return productCategoryService.deleteProductCategory(productCategoryId);
+    public ResponseEntity<String> delete(@PathVariable("id") UUID productCategoryId) throws ProductCategoryNotFoundException {
+        return new ResponseEntity<>(productCategoryService.deleteProductCategory(productCategoryId),HttpStatus.OK);
     }
+
     @PutMapping("/{id}")
-    public String putProductCategory(@PathVariable("id")UUID productCategoryId, @RequestBody ProductCategoryDto productCategoryDto)throws ProductNotFoundException{
-        return productCategoryService.putProductCategory(productCategoryId,productCategoryDto);
+    public ResponseEntity<String> put(@PathVariable("id") UUID productCategoryId, @RequestBody ProductCategoryDto productCategoryDto) throws ProductNotFoundException {
+        return new ResponseEntity<>(productCategoryService.putProductCategory(productCategoryId, productCategoryDto),HttpStatus.OK);
     }
 }

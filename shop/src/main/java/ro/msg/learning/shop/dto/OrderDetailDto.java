@@ -1,12 +1,11 @@
 package ro.msg.learning.shop.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ro.msg.learning.shop.domain.Order;
 import ro.msg.learning.shop.domain.Product;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDetailDto {

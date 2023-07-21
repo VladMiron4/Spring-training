@@ -3,6 +3,7 @@ package ro.msg.learning.shop.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -10,7 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderDto {
+public class CreateOrderDto {
     private UUID orderId;
     private UUID customerId;
     private String addressCity;
@@ -18,4 +19,5 @@ public class OrderDto {
     private String adressStreet;
     private String adressCounty;
     private LocalDate date;
+    private List<OrderProductDto> orderProductDtoList;
 }
