@@ -17,12 +17,8 @@ import java.util.UUID;
 @EqualsAndHashCode
 @Data
 public class OrderDetailId implements Serializable {
-
     @Column(name = "product")
     private UUID productId;
     @Column(name = "order")
     private UUID orderId;
-
-
-
 }

@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,8 +17,9 @@ import ro.msg.learning.shop.service.CustomerService;
 public class CustomerController {
 
     private final CustomerService customerService;
+
     public CustomerController(CustomerService customerService) {
-        this.customerService=customerService;
+        this.customerService = customerService;
     }
 
     @PostMapping

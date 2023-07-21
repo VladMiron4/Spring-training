@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,9 +19,11 @@ public class ProductCategoryController {
 
 
     ProductCategoryService productCategoryService;
-    public ProductCategoryController(ProductCategoryService productCategoryService){
-        this.productCategoryService=productCategoryService;
+
+    public ProductCategoryController(ProductCategoryService productCategoryService) {
+        this.productCategoryService = productCategoryService;
     }
+
     @PostMapping
     public ResponseEntity<ProductCategoryDto> create(@RequestBody @Validated ProductCategoryDto productCategoryDto) {
         return new ResponseEntity<>(productCategoryService.createProductCategory(productCategoryDto), HttpStatus.OK);
@@ -35,11 +36,11 @@ public class ProductCategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") UUID productCategoryId) throws ProductCategoryNotFoundException {
-        return new ResponseEntity<>(productCategoryService.deleteProductCategory(productCategoryId),HttpStatus.OK);
+        return new ResponseEntity<>(productCategoryService.deleteProductCategory(productCategoryId), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> put(@PathVariable("id") UUID productCategoryId, @RequestBody ProductCategoryDto productCategoryDto) throws ProductNotFoundException {
-        return new ResponseEntity<>(productCategoryService.putProductCategory(productCategoryId, productCategoryDto),HttpStatus.OK);
+        return new ResponseEntity<>(productCategoryService.putProductCategory(productCategoryId, productCategoryDto), HttpStatus.OK);
     }
 }

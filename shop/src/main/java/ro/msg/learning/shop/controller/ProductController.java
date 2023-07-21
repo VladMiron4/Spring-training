@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,8 +18,9 @@ import java.util.UUID;
 public class ProductController {
 
     private final ProductService productService;
-    public ProductController(ProductService productService){
-        this.productService=productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
 
@@ -31,7 +31,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") UUID productId) throws ProductNotFoundException {
-        return new ResponseEntity<>(productService.deleteProduct(productId),HttpStatus.OK);
+        return new ResponseEntity<>(productService.deleteProduct(productId), HttpStatus.OK);
     }
 
     @GetMapping
@@ -41,6 +41,6 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> put(@PathVariable("id") UUID productId, @RequestBody @Validated ProductDto productDto) throws ProductNotFoundException {
-        return new ResponseEntity<>(productService.patchProduct(productId, productDto),HttpStatus.OK);
+        return new ResponseEntity<>(productService.patchProduct(productId, productDto), HttpStatus.OK);
     }
 }

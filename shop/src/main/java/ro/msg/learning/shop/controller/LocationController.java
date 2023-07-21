@@ -1,6 +1,5 @@
 package ro.msg.learning.shop.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,9 +18,11 @@ import java.util.UUID;
 public class LocationController {
 
     private final LocationService locationService;
+
     public LocationController(LocationService locationService) {
-        this.locationService=locationService;
+        this.locationService = locationService;
     }
+
     @GetMapping
     public ResponseEntity<List<LocationDto>> getAll() {
         return new ResponseEntity<List<LocationDto>>(locationService.findAllLocations(), HttpStatus.OK);
@@ -29,12 +30,12 @@ public class LocationController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") UUID locationId) throws LocationNotFoundException {
-        return new ResponseEntity<>(locationService.deleteLocation(locationId),HttpStatus.OK);
+        return new ResponseEntity<>(locationService.deleteLocation(locationId), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> put(@PathVariable UUID locationId, @RequestBody LocationDto locationDto) throws LocationNotFoundException {
-        return new ResponseEntity<>(locationService.putLocation(locationId, locationDto),HttpStatus.OK);
+        return new ResponseEntity<>(locationService.putLocation(locationId, locationDto), HttpStatus.OK);
     }
 
     @PostMapping
