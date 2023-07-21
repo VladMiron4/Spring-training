@@ -11,6 +11,8 @@ public class StockMapper {
         return Stock.builder()
                 .Id(stockDto.getStockId())
                 .quantity(stockDto.getQuantity())
+                .location(stockDto.getLocation())
+                .product(stockDto.getProduct())
                 .build();
     }
 }

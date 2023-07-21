@@ -33,4 +33,8 @@ public class LocationController {
     public String putLocation (@PathVariable UUID locationId, @RequestBody LocationDto locationDto) throws LocationNotFoundException {
         return locationService.putLocation(locationId,locationDto);
     }
+    @PostMapping("/new")
+    public ResponseEntity<LocationDto> postLocation(@RequestBody @Validated LocationDto locationDto) {
+        return new ResponseEntity<>(locationService.createLocation(locationDto),HttpStatus.OK);
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 import ro.msg.learning.shop.domain.key.StockId;
 
@@ -11,8 +12,10 @@ import ro.msg.learning.shop.domain.key.StockId;
 @Entity
 @Table(name="stock")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Stock {
+
     @EmbeddedId
     private StockId Id;
 

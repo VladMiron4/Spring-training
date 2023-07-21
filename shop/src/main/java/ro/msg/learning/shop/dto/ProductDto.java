@@ -21,13 +21,4 @@ public class ProductDto {
     private String imageUrl;
     private UUID category;
     private String supplier;
-    public ProductDto(UUID productId,String name,BigDecimal price,Double weight, String imageUrl, String supplier,UUID category){
-        this.productId=productId;
-        this.name=name;
-        this.price=price;
-        this.weight=weight;
-        this.imageUrl=imageUrl;
-        this.supplier=supplier;
-        this.category=category;
-    }
 }

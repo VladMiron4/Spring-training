@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.NotFound;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name="orderdetail")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class OrderDetail{
 
@@ -26,6 +28,9 @@ public class OrderDetail{
     @NotNull
     @Column(name="quantity")
     private Integer quantity;
+
+    @Column(name="shippedfrom")
+    private UUID locationId;
 
     @ManyToOne
     @MapsId("productId")

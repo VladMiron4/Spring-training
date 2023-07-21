@@ -34,7 +34,8 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public LocationDto createLocation(LocationDto locationDto) {
-         locationRepository.save(locationMapper.toEntity(locationDto));
+         Location savedLocation = locationRepository.save(locationMapper.toEntity(locationDto));
+         locationDto.setLocationId(savedLocation.getLocationId());
          return locationDto;
     }
 

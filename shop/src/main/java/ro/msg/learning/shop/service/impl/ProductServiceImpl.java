@@ -39,15 +39,13 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     LocationRepository locationRepository;
 
-
    @Autowired
    ProductMapper productMapper;
    @Autowired
    StockMapper stockMapper;
-   @Autowired
 
     @Override
-    public ProductDto createProduct(ProductDto productDto, String productCategoryName,String locationName,Integer quantity) throws ProductCategoryNotFoundException, LocationNotFoundException {
+    public ProductDto createProduct(ProductDto productDto, String productCategoryName, String locationName, Integer quantity) throws ProductCategoryNotFoundException, LocationNotFoundException {
 
         ProductCategory productCategory=productCategoryRepository.findOneByNameIs(productCategoryName);
         if (productCategory==null){
@@ -66,6 +64,8 @@ public class ProductServiceImpl implements ProductService {
         StockDto stockDto= StockDto.builder()
                 .stockId(stockId)
                 .quantity(quantity)
+                .location(foundLocation)
+                .product(savedProduct)
                 .build();
         stockRepository.save(stockMapper.toEntity(stockDto));
         return productDto;

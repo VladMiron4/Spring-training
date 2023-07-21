@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name="order")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Order{
 

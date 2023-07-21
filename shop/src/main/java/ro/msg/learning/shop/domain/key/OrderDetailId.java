@@ -19,8 +19,6 @@ public class OrderDetailId implements Serializable {
     private UUID productId;
     @Column(name="order")
     private UUID orderId;
-    @Column(name="location")
-    private UUID locationId;
 
 
     @Override
@@ -35,14 +33,11 @@ public class OrderDetailId implements Serializable {
         if (!stockObject.productId.equals(this.productId)){
             return false;
         }
-        if (!stockObject.locationId.equals(this.locationId)){
-            return false;
-        }
         return true;
     }
     @Override
     public int hashCode(){
-        return Objects.hash(productId,orderId,locationId);
+        return Objects.hash(productId,orderId);
     }
 
 }
