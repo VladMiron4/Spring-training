@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/locations")
-@Validated
 @RestController
 @AllArgsConstructor
 public class LocationController {
@@ -27,8 +26,13 @@ public class LocationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") UUID locationId) throws LocationNotFoundException {
-        return new ResponseEntity<>(locationService.deleteLocation(locationId), HttpStatus.OK);
+    public ResponseEntity delete(@PathVariable("id") UUID locationId) throws LocationNotFoundException {
+        try {
+            return new ResponseEntity<>(locationService.deleteLocation(locationId), HttpStatus.OK);
+        }
+        catch (LocationNotFoundException exception){
+            return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
@@ -37,7 +41,7 @@ public class LocationController {
     }
 
     @PostMapping
-    public ResponseEntity<LocationDto> post(@RequestBody @Validated LocationDto locationDto) {
+    public ResponseEntity<LocationDto> post(@RequestBody LocationDto locationDto) {
         return new ResponseEntity<>(locationService.createLocation(locationDto), HttpStatus.OK);
     }
 }

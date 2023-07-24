@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,8 +20,8 @@ import java.util.UUID;
 public class Order {
 
 
-    @OneToMany(mappedBy = "order")
-    Set<OrderDetail> orderDetail;
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
     @Id
     @Column(name = "id")
     @UuidGenerator

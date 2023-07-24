@@ -12,7 +12,6 @@ import ro.msg.learning.shop.dto.CustomerDto;
 import ro.msg.learning.shop.service.CustomerService;
 
 @RequestMapping("/customers")
-@Validated
 @RestController
 @AllArgsConstructor
 public class CustomerController {
@@ -20,7 +19,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<CustomerDto> post(@RequestBody @Validated CustomerDto customerDto) {
+    public ResponseEntity<CustomerDto> post(@RequestBody CustomerDto customerDto) {
         return new ResponseEntity<>(customerService.createCustomer(customerDto), HttpStatus.OK);
     }
 }

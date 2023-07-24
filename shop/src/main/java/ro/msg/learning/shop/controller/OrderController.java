@@ -17,7 +17,7 @@ import ro.msg.learning.shop.service.OrderService;
 
 
 @RequestMapping("/orders")
-@Validated
+
 @RestController
 @AllArgsConstructor
 public class OrderController {
@@ -25,7 +25,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDto> post(@RequestBody @Validated CreateOrderDto createOrderDto) throws ProductNotFoundException, LocationNotFoundException, NegativeQuantityException {
+    public ResponseEntity<OrderDto> post(@RequestBody CreateOrderDto createOrderDto) throws ProductNotFoundException, LocationNotFoundException, NegativeQuantityException {
         return new ResponseEntity<>(orderService.create(createOrderDto), HttpStatus.OK);
     }
 }

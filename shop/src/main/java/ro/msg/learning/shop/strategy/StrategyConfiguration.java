@@ -16,19 +16,17 @@ public class StrategyConfiguration {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final OrderDetailRepository orderDetailRepository;
 
     private OrderLocationStrategy orderLocationStrategy;
 
     @Value("${strategy}")
     private String strategy;
 
-    public StrategyConfiguration(StockRepository stockRepository, ProductRepository productRepository, OrderRepository orderRepository, OrderMapper orderMapper, OrderDetailRepository orderDetailRepository) throws StrategyNotFoundException {
+    public StrategyConfiguration(StockRepository stockRepository, ProductRepository productRepository, OrderRepository orderRepository, OrderMapper orderMapper) throws StrategyNotFoundException {
         this.stockRepository = stockRepository;
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
-        this.orderDetailRepository = orderDetailRepository;
 
     }
 
@@ -38,9 +36,9 @@ public class StrategyConfiguration {
             throw new StrategyNotFoundException();
         }
         if (strategy.equals("single")) {
-            orderLocationStrategy = new SingleLocationOrder(stockRepository, productRepository, orderRepository, orderMapper, orderDetailRepository);
+            orderLocationStrategy = new SingleLocationOrder(stockRepository, productRepository, orderRepository, orderMapper);
         } else {
-            orderLocationStrategy = new MostAbundantLocation(stockRepository, productRepository, orderRepository, orderMapper, orderDetailRepository);
+            orderLocationStrategy = new MostAbundantLocation(stockRepository, productRepository, orderRepository, orderMapper);
         }
         return orderLocationStrategy;
     }

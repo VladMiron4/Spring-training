@@ -14,12 +14,12 @@ import ro.msg.learning.shop.exception.LocationNotFoundException;
 import ro.msg.learning.shop.exception.NegativeQuantityException;
 import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.mapper.OrderMapper;
-import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.OrderRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.StockRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +33,6 @@ public class SingleLocationOrder implements OrderLocationStrategy {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final OrderDetailRepository orderDetailRepository;
 
 
     @Override
@@ -61,12 +60,13 @@ public class SingleLocationOrder implements OrderLocationStrategy {
                 .adressCounty(createOrderDto.getAddressCounty())
                 .customerId(createOrderDto.getCustomerId())
                 .build();
-        Order order = orderRepository.save(orderMapper.toEntity(orderDto));
         UUID locationId = firstProductLocations.get(0);
+        List<OrderDetail>orderDetails=new ArrayList<>();
+        Order order = orderMapper.toEntity(orderDto);
 
         createOrderDto.getOrderProductDtoList().forEach(orderProductDto -> {
             OrderDetailId orderDetailId = OrderDetailId.builder()
-                    .orderId(order.getOrderId())
+                    .orderId(null)
                     .productId(orderProductDto.getProductId())
                     .build();
             OrderDetail orderDetail = OrderDetail.builder()
@@ -76,12 +76,14 @@ public class SingleLocationOrder implements OrderLocationStrategy {
                     .order(order)
                     .product(productRepository.findById(orderProductDto.getProductId()).get())
                     .build();
-            orderDetailRepository.save(orderDetail);
+            orderDetails.add(orderDetail);
             StockId stockId = StockId.builder().locationId(locationId).productId(orderProductDto.getProductId()).build();
             Stock stock = stockRepository.findById(stockId).get();
             stock.setQuantity(stock.getQuantity() - orderProductDto.getQuantity());
             stockRepository.save(stock);
         });
+        order.setOrderDetail(orderDetails);
+        orderRepository.save(order);
         orderDto.setOrderId(order.getOrderId());
         return orderDto;
     }

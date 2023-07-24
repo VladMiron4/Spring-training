@@ -13,12 +13,12 @@ import ro.msg.learning.shop.exception.LocationNotFoundException;
 import ro.msg.learning.shop.exception.NegativeQuantityException;
 import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.mapper.OrderMapper;
-import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.OrderRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.StockRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +30,6 @@ public class MostAbundantLocation implements OrderLocationStrategy {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final OrderDetailRepository orderDetailRepository;
 
     @Override
     public OrderDto create(CreateOrderDto createOrderDto) throws NegativeQuantityException, ProductNotFoundException, LocationNotFoundException {
@@ -40,6 +39,7 @@ public class MostAbundantLocation implements OrderLocationStrategy {
                 throw new NegativeQuantityException();
             }
         }
+        List<OrderDetail> orderDetails = new ArrayList<>();
         OrderDto orderDto = OrderDto.builder()
                 .date(LocalDate.now())
                 .addressCity(createOrderDto.getAddressCity())
@@ -48,7 +48,7 @@ public class MostAbundantLocation implements OrderLocationStrategy {
                 .adressCounty(createOrderDto.getAddressCounty())
                 .customerId(createOrderDto.getCustomerId())
                 .build();
-        Order order = orderRepository.save(orderMapper.toEntity(orderDto));
+        Order order = orderMapper.toEntity(orderDto);
 
         for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
             if (productRepository.findById(createOrderDto.getOrderProductDtoList().get(i).getProductId()).isEmpty()) {
@@ -77,10 +77,12 @@ public class MostAbundantLocation implements OrderLocationStrategy {
                     .order(order)
                     .product(productRepository.findById(maximumStock.getId().getProductId()).get())
                     .build();
-            orderDetailRepository.save(orderDetail);
+            orderDetails.add(orderDetail);
             maximumStock.setQuantity(maximumStock.getQuantity() - createOrderDto.getOrderProductDtoList().get(i).getQuantity());
             stockRepository.save(maximumStock);
         }
+        order.setOrderDetail(orderDetails);
+        orderRepository.save(order);
         orderDto.setOrderId(order.getOrderId());
         return orderDto;
     }

@@ -23,7 +23,7 @@ public class ProductCategoryController {
     ProductCategoryService productCategoryService;
 
     @PostMapping
-    public ResponseEntity<ProductCategoryDto> create(@RequestBody @Validated ProductCategoryDto productCategoryDto) {
+    public ResponseEntity<ProductCategoryDto> create(@RequestBody ProductCategoryDto productCategoryDto) {
         return new ResponseEntity<>(productCategoryService.createProductCategory(productCategoryDto), HttpStatus.OK);
     }
 
