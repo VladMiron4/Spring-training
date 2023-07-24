@@ -12,12 +12,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateOrderDto {
-    private UUID orderId;
     private UUID customerId;
     private String addressCity;
     private String addressCountry;
-    private String adressStreet;
-    private String adressCounty;
-    private LocalDate date;
+    private String addressStreet;
+    private String addressCounty;
     private List<OrderProductDto> orderProductDtoList;
 }

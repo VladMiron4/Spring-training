@@ -2,10 +2,7 @@ package ro.msg.learning.shop.domain.key;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -16,9 +13,10 @@ import java.util.UUID;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Data
+@Builder
 public class OrderDetailId implements Serializable {
     @Column(name = "product")
     private UUID productId;
-    @Column(name = "order")
+    @Column(name = "\"order\"")
     private UUID orderId;
 }

@@ -1,10 +1,12 @@
 package ro.msg.learning.shop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -16,8 +18,7 @@ import java.util.UUID;
 @Table(name = "location")
 @Builder
 public class Location {
-    @OneToMany(mappedBy = "location")
-    Set<Stock> stock;
+
     @Id
     @Column(name = "id")
     @UuidGenerator
@@ -42,4 +43,8 @@ public class Location {
     @NotNull
     @Column(name = "address_streetaddress")
     private String addressStreet;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "location")
+    List<Stock> stock;
 }

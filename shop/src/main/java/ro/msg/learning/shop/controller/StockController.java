@@ -1,6 +1,7 @@
 package ro.msg.learning.shop.controller;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,14 +19,13 @@ import java.util.UUID;
 @RestController()
 @Validated
 @RequestMapping("/stocks")
+@AllArgsConstructor
 public class StockController {
 
 
     private final StockService stockService;
 
-    public StockController(StockService stockService) {
-        this.stockService = stockService;
-    }
+
 
     @PostMapping
     public ResponseEntity<StockDto> post(@RequestParam UUID productId, @RequestParam UUID locationId, @RequestParam Integer quantity) throws ProductNotFoundException, LocationNotFoundException {

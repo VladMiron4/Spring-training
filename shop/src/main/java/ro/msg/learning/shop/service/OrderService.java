@@ -1,35 +1,21 @@
 package ro.msg.learning.shop.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dto.CreateOrderDto;
 import ro.msg.learning.shop.dto.OrderDto;
-import ro.msg.learning.shop.repository.LocationRepository;
-import ro.msg.learning.shop.repository.OrderDetailRepository;
-import ro.msg.learning.shop.repository.OrderRepository;
-import ro.msg.learning.shop.repository.StockRepository;
+import ro.msg.learning.shop.exception.LocationNotFoundException;
+import ro.msg.learning.shop.exception.NegativeQuantityException;
+import ro.msg.learning.shop.exception.ProductNotFoundException;
+import ro.msg.learning.shop.strategy.OrderLocationStrategy;
 
 @Service
+@AllArgsConstructor
 public class OrderService {
 
 
-    private final OrderRepository orderRepository;
-
-    private final StockRepository stockRepository;
-
-    private final OrderDetailRepository orderDetailRepository;
-
-
-    private final LocationRepository locationRepository;
-
-    public OrderService(OrderRepository orderRepository, StockRepository stockRepository, OrderDetailRepository orderDetailRepository,LocationRepository locationRepository){
-        this.orderRepository=orderRepository;
-        this.orderDetailRepository=orderDetailRepository;
-        this.locationRepository=locationRepository;
-        this.stockRepository=stockRepository;
-    }
-
-    public OrderDto createOrder(CreateOrderDto createOrderDto) {
-        return null;
+    private OrderLocationStrategy orderLocationStrategy;
+    public OrderDto createSingleLocationOrder(CreateOrderDto createOrderDto) throws LocationNotFoundException, ProductNotFoundException, NegativeQuantityException {
+        return orderLocationStrategy.create(createOrderDto);
     }
 }

@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,14 +16,12 @@ import java.util.UUID;
 @RequestMapping("/product/categories")
 @Validated
 @RestController
+@AllArgsConstructor
 public class ProductCategoryController {
 
 
     ProductCategoryService productCategoryService;
 
-    public ProductCategoryController(ProductCategoryService productCategoryService) {
-        this.productCategoryService = productCategoryService;
-    }
 
     @PostMapping
     public ResponseEntity<ProductCategoryDto> create(@RequestBody @Validated ProductCategoryDto productCategoryDto) {

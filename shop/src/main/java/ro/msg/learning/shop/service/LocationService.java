@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.Location;
@@ -15,16 +16,14 @@ import java.util.UUID;
 import static ro.msg.learning.shop.message.Messages.*;
 
 @Service
+@AllArgsConstructor
 public class LocationService {
 
 
     private final LocationRepository locationRepository;
 
     private final LocationMapper locationMapper;
-    public LocationService(LocationRepository locationRepository,LocationMapper locationMapper){
-        this.locationRepository=locationRepository;
-        this.locationMapper=locationMapper;
-    }
+
 
     public List<LocationDto> findAllLocations() {
         List<Location> foundLocations = locationRepository.findAll();

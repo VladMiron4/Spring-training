@@ -1,6 +1,7 @@
 package ro.msg.learning.shop.service;
 
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.ProductCategory;
@@ -22,6 +23,7 @@ import java.util.UUID;
 import static ro.msg.learning.shop.message.Messages.*;
 
 @Service
+@AllArgsConstructor
 public class ProductService  {
 
     private final ProductRepository productRepository;
@@ -37,16 +39,7 @@ public class ProductService  {
 
     private final StockMapper stockMapper;
 
-    public ProductService(ProductRepository productRepository,ProductCategoryRepository productCategoryRepository,
-                          StockRepository stockRepository, LocationRepository locationRepository
-            ,ProductMapper productMapper,StockMapper stockMapper) {
-        this.productCategoryRepository=productCategoryRepository;
-        this.stockRepository=stockRepository;
-        this.locationRepository=locationRepository;
-        this.productMapper=productMapper;
-        this.stockMapper=stockMapper;
-        this.productRepository=productRepository;
-    }
+
 
     
     public ProductDto createProduct(ProductDto productDto) throws ProductCategoryNotFoundException {

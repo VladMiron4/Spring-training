@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.ProductCategory;
@@ -17,16 +18,13 @@ import java.util.UUID;
 import static ro.msg.learning.shop.message.Messages.PATCHED_SUCCESSFULLY;
 
 @Service
+@AllArgsConstructor
 public class ProductCategoryService {
 
     private final ProductCategoryRepository productCategoryRepository;
 
     private final ProductCategoryMapper productCategoryMapper;
 
-    public ProductCategoryService (ProductCategoryMapper productCategoryMapper,ProductCategoryRepository productCategoryRepository){
-        this.productCategoryMapper=productCategoryMapper;
-        this.productCategoryRepository=productCategoryRepository;
-    }
 
 
     public ProductCategoryDto createProductCategory(ProductCategoryDto productCategoryDto) {

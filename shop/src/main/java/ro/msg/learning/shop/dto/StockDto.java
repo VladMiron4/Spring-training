@@ -5,8 +5,7 @@ import ro.msg.learning.shop.domain.Location;
 import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.key.StockId;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

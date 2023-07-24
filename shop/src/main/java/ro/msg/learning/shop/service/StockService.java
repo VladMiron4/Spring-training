@@ -1,6 +1,6 @@
 package ro.msg.learning.shop.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.Location;
 import ro.msg.learning.shop.domain.Product;
@@ -18,22 +18,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class StockService {
 
-    
+
     private final StockRepository stockRepository;
-    
+
     private final ProductRepository productRepository;
-    
+
     private final LocationRepository locationRepository;
     private final StockMapper stockMapper;
-    public StockService(StockRepository stockRepository,ProductRepository productRepository,LocationRepository locationRepository
-    ,StockMapper stockMapper){
-        this.stockRepository=stockRepository;
-        this.productRepository=productRepository;
-        this.locationRepository=locationRepository;
-        this.stockMapper=stockMapper;
-    }
+
+
 
     public List<Stock> findStocksByProductId(UUID productId) {
         return stockRepository.findAllByProductProductId(productId);
@@ -59,7 +55,14 @@ public class StockService {
                 .stockId(stockId)
                 .quantity(quantity)
                 .build();
+        Stock stock = stockMapper.toEntity(stockDto);
+        foundProduct.getStockList().add(stock);
+        foundLocation.getStock().add(stock);
+        stockDto.setLocation(foundLocation);
+        stockDto.setProduct(foundProduct);
         stockRepository.save(stockMapper.toEntity(stockDto));
+        locationRepository.save(foundLocation);
+        productRepository.save(foundProduct);
         return stockDto;
     }
 }

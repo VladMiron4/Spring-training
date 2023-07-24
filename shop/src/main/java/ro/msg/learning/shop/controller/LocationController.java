@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,14 +15,12 @@ import java.util.UUID;
 @RequestMapping("/locations")
 @Validated
 @RestController
-
+@AllArgsConstructor
 public class LocationController {
 
     private final LocationService locationService;
 
-    public LocationController(LocationService locationService) {
-        this.locationService = locationService;
-    }
+
 
     @GetMapping
     public ResponseEntity<List<LocationDto>> getAll() {
