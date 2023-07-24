@@ -24,7 +24,7 @@ import static ro.msg.learning.shop.message.Messages.*;
 
 @Service
 @AllArgsConstructor
-public class ProductService  {
+public class ProductService {
 
     private final ProductRepository productRepository;
 
@@ -40,11 +40,9 @@ public class ProductService  {
     private final StockMapper stockMapper;
 
 
-
-    
     public ProductDto createProduct(ProductDto productDto) throws ProductCategoryNotFoundException {
-        
-        if (productCategoryRepository.findById(productDto.getCategory()).isEmpty()){
+
+        if (productCategoryRepository.findById(productDto.getCategory()).isEmpty()) {
             throw new ProductCategoryNotFoundException();
         }
         ProductCategory productCategory = productCategoryRepository.findById(productDto.getCategory()).get();
@@ -53,7 +51,7 @@ public class ProductService  {
         return productDto;
     }
 
-    
+
     public String deleteProduct(UUID productId) throws ProductNotFoundException {
         if (productRepository.findById(productId).isEmpty()) {
             throw new ProductNotFoundException();
@@ -72,7 +70,7 @@ public class ProductService  {
         return DELETED_SUCCESSFULLY;
     }
 
-    
+
     public List<ProductDto> getAllProducts() {
         List<Product> foundProducts = productRepository.findAll();
         List<ProductDto> productDtos = new ArrayList<>();
@@ -82,7 +80,7 @@ public class ProductService  {
         return productDtos;
     }
 
-    
+
     public String patchProduct(UUID productId, ProductDto productDto) throws ProductNotFoundException {
         if (productRepository.findById(productId).isEmpty()) {
             throw new ProductNotFoundException();

@@ -2,7 +2,6 @@ package ro.msg.learning.shop.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 

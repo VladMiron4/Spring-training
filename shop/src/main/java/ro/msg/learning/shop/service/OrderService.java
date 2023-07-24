@@ -13,9 +13,9 @@ import ro.msg.learning.shop.strategy.OrderLocationStrategy;
 @AllArgsConstructor
 public class OrderService {
 
-
     private OrderLocationStrategy orderLocationStrategy;
-    public OrderDto createSingleLocationOrder(CreateOrderDto createOrderDto) throws LocationNotFoundException, ProductNotFoundException, NegativeQuantityException {
+
+    public OrderDto create(CreateOrderDto createOrderDto) throws LocationNotFoundException, ProductNotFoundException, NegativeQuantityException {
         return orderLocationStrategy.create(createOrderDto);
     }
 }

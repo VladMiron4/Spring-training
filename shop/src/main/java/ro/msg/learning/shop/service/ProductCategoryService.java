@@ -1,7 +1,6 @@
 package ro.msg.learning.shop.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.ProductCategory;
 import ro.msg.learning.shop.dto.ProductCategoryDto;
@@ -26,13 +25,11 @@ public class ProductCategoryService {
     private final ProductCategoryMapper productCategoryMapper;
 
 
-
     public ProductCategoryDto createProductCategory(ProductCategoryDto productCategoryDto) {
 
         productCategoryRepository.save(productCategoryMapper.toEntity(productCategoryDto));
         return productCategoryDto;
     }
-
 
     public List<ProductCategoryDto> findAllProductCategories() {
         List<ProductCategory> foundProductCategories = productCategoryRepository.findAll();

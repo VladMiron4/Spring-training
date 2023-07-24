@@ -1,7 +1,5 @@
 package ro.msg.learning.shop.strategy;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +18,7 @@ public class StrategyConfiguration {
     private final OrderMapper orderMapper;
     private final OrderDetailRepository orderDetailRepository;
 
-    private  OrderLocationStrategy orderLocationStrategy;
+    private OrderLocationStrategy orderLocationStrategy;
 
     @Value("${strategy}")
     private String strategy;
@@ -33,6 +31,7 @@ public class StrategyConfiguration {
         this.orderDetailRepository = orderDetailRepository;
 
     }
+
     @Bean
     public OrderLocationStrategy configure() throws StrategyNotFoundException {
         if (!strategy.equals("single") && !strategy.equals("abundant")) {
@@ -40,8 +39,7 @@ public class StrategyConfiguration {
         }
         if (strategy.equals("single")) {
             orderLocationStrategy = new SingleLocationOrder(stockRepository, productRepository, orderRepository, orderMapper, orderDetailRepository);
-        }
-        else {
+        } else {
             orderLocationStrategy = new MostAbundantLocation(stockRepository, productRepository, orderRepository, orderMapper, orderDetailRepository);
         }
         return orderLocationStrategy;

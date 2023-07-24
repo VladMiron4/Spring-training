@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -20,6 +19,8 @@ import java.util.UUID;
 public class Order {
 
 
+    @OneToMany(mappedBy = "order")
+    Set<OrderDetail> orderDetail;
     @Id
     @Column(name = "id")
     @UuidGenerator
@@ -29,7 +30,7 @@ public class Order {
     @NotNull
     @Column(name = "createdat")
     @Builder.Default
-    private LocalDate date= LocalDate.now();
+    private LocalDate date = LocalDate.now();
     @NotNull
     @Column(name = "address_city")
     private String addressCity;
@@ -44,8 +45,6 @@ public class Order {
     private String addressStreet;
     @ManyToOne
     @MapsId("customerId")
-    @JoinColumn(name="id")
+    @JoinColumn(name = "id")
     private Customer Customer;
-    @OneToMany(mappedBy = "order")
-    Set<OrderDetail> orderDetail;
 }

@@ -21,7 +21,6 @@ public class LocationController {
     private final LocationService locationService;
 
 
-
     @GetMapping
     public ResponseEntity<List<LocationDto>> getAll() {
         return new ResponseEntity<List<LocationDto>>(locationService.findAllLocations(), HttpStatus.OK);

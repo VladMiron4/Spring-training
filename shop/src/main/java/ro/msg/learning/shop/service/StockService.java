@@ -30,7 +30,6 @@ public class StockService {
     private final StockMapper stockMapper;
 
 
-
     public List<Stock> findStocksByProductId(UUID productId) {
         return stockRepository.findAllByProductProductId(productId);
     }

@@ -21,9 +21,6 @@ public class ProductController {
 
     private final ProductService productService;
 
-
-
-
     @PostMapping
     public ResponseEntity<ProductDto> create(@RequestBody @Validated ProductDto productDto) throws ProductCategoryNotFoundException {
         return new ResponseEntity<ProductDto>(productService.createProduct(productDto), HttpStatus.OK);

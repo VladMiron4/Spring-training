@@ -1,6 +1,9 @@
 package ro.msg.learning.shop.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ro.msg.learning.shop.domain.Order;
 import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.key.OrderDetailId;

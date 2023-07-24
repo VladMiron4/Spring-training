@@ -25,8 +25,6 @@ public class StockController {
 
     private final StockService stockService;
 
-
-
     @PostMapping
     public ResponseEntity<StockDto> post(@RequestParam UUID productId, @RequestParam UUID locationId, @RequestParam Integer quantity) throws ProductNotFoundException, LocationNotFoundException {
         return new ResponseEntity<>(stockService.createStock(productId, locationId, quantity), HttpStatus.OK);
