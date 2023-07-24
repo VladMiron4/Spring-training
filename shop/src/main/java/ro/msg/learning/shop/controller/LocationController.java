@@ -3,10 +3,8 @@ package ro.msg.learning.shop.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.dto.LocationDto;
-import ro.msg.learning.shop.exception.LocationNotFoundException;
 import ro.msg.learning.shop.service.LocationService;
 
 import java.util.List;
@@ -26,17 +24,12 @@ public class LocationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") UUID locationId) throws LocationNotFoundException {
-        try {
-            return new ResponseEntity<>(locationService.deleteLocation(locationId), HttpStatus.OK);
-        }
-        catch (LocationNotFoundException exception){
-            return new ResponseEntity<>(exception.getMessage(),HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity delete(@PathVariable("id") UUID locationId) {
+        return new ResponseEntity<>(locationService.deleteLocation(locationId), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> put(@PathVariable UUID locationId, @RequestBody LocationDto locationDto) throws LocationNotFoundException {
+    public ResponseEntity<String> put(@PathVariable UUID locationId, @RequestBody LocationDto locationDto) {
         return new ResponseEntity<>(locationService.putLocation(locationId, locationDto), HttpStatus.OK);
     }
 

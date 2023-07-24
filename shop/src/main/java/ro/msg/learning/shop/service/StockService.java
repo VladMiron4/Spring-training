@@ -7,9 +7,9 @@ import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.Stock;
 import ro.msg.learning.shop.domain.key.StockId;
 import ro.msg.learning.shop.dto.StockDto;
-import ro.msg.learning.shop.exception.LocationNotFoundException;
-import ro.msg.learning.shop.exception.ProductNotFoundException;
+import ro.msg.learning.shop.exception.BadRequestException;
 import ro.msg.learning.shop.mapper.StockMapper;
+import ro.msg.learning.shop.message.Messages;
 import ro.msg.learning.shop.repository.LocationRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.StockRepository;
@@ -34,12 +34,12 @@ public class StockService {
         return stockRepository.findAllByProductProductId(productId);
     }
 
-    public StockDto createStock(UUID productId, UUID locationId, Integer quantity) throws ProductNotFoundException, LocationNotFoundException {
+    public StockDto createStock(UUID productId, UUID locationId, Integer quantity) throws BadRequestException {
         if (locationRepository.findById(locationId).isEmpty()) {
-            throw new LocationNotFoundException();
+            throw new BadRequestException(Messages.BAD_LOCATION);
         }
         if (productRepository.findById(productId).isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new BadRequestException(Messages.BAD_PRODUCT);
         }
         Location foundLocation = locationRepository.findById(locationId).get();
         Product foundProduct = productRepository.findById(productId).get();

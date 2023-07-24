@@ -12,7 +12,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Embeddable
-@Data
+@Setter
+@Getter
 @Builder
 public class StockId implements Serializable {
     @Column(name = "product")

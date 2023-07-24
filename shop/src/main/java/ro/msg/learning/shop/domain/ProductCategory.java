@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
@@ -24,12 +23,10 @@ public class ProductCategory {
     @UuidGenerator
     private UUID productCategoryId;
 
-    @NotNull
-    @Column(name = "name")
+
     private String name;
 
-    @NotNull
-    @Column(name = "description")
+
     private String description;
 
     public ProductCategory(String name, String description) {

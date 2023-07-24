@@ -7,8 +7,8 @@ import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.domain.ProductCategory;
 import ro.msg.learning.shop.domain.Stock;
 import ro.msg.learning.shop.dto.ProductDto;
-import ro.msg.learning.shop.exception.ProductCategoryNotFoundException;
-import ro.msg.learning.shop.exception.ProductNotFoundException;
+import ro.msg.learning.shop.exception.BadRequestException;
+import ro.msg.learning.shop.exception.NotFoundException;
 import ro.msg.learning.shop.mapper.ProductMapper;
 import ro.msg.learning.shop.mapper.StockMapper;
 import ro.msg.learning.shop.repository.LocationRepository;
@@ -40,10 +40,10 @@ public class ProductService {
     private final StockMapper stockMapper;
 
 
-    public ProductDto createProduct(ProductDto productDto) throws ProductCategoryNotFoundException {
+    public ProductDto createProduct(ProductDto productDto) throws BadRequestException {
 
         if (productCategoryRepository.findById(productDto.getCategory()).isEmpty()) {
-            throw new ProductCategoryNotFoundException();
+            throw new BadRequestException(BAD_PRODUCT_CATEGORY);
         }
         ProductCategory productCategory = productCategoryRepository.findById(productDto.getCategory()).get();
         productDto.setCategory(productCategory.getProductCategoryId());
@@ -52,9 +52,9 @@ public class ProductService {
     }
 
 
-    public String deleteProduct(UUID productId) throws ProductNotFoundException {
+    public String deleteProduct(UUID productId) throws NotFoundException {
         if (productRepository.findById(productId).isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new NotFoundException(PRODUCT_NOT_FOUND);
         }
         Product foundProduct = productRepository.findById(productId).get();
 
@@ -81,9 +81,9 @@ public class ProductService {
     }
 
 
-    public String patchProduct(UUID productId, ProductDto productDto) throws ProductNotFoundException {
+    public String patchProduct(UUID productId, ProductDto productDto) throws NotFoundException {
         if (productRepository.findById(productId).isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new NotFoundException(PRODUCT_NOT_FOUND);
         }
         Product foundProduct = productRepository.findById(productId).get();
         if (productDto.getCategory() != null) {

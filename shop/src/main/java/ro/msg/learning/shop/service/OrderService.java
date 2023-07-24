@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dto.CreateOrderDto;
 import ro.msg.learning.shop.dto.OrderDto;
-import ro.msg.learning.shop.exception.LocationNotFoundException;
-import ro.msg.learning.shop.exception.NegativeQuantityException;
-import ro.msg.learning.shop.exception.ProductNotFoundException;
 import ro.msg.learning.shop.strategy.OrderLocationStrategy;
 
 @Service
@@ -15,7 +12,7 @@ public class OrderService {
 
     private OrderLocationStrategy orderLocationStrategy;
 
-    public OrderDto create(CreateOrderDto createOrderDto) throws LocationNotFoundException, ProductNotFoundException, NegativeQuantityException {
+    public OrderDto create(CreateOrderDto createOrderDto) {
         return orderLocationStrategy.create(createOrderDto);
     }
 }

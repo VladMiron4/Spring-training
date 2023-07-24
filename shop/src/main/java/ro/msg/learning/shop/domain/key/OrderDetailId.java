@@ -11,7 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-@Data
+@Getter
+@Setter
 @Builder
 public class OrderDetailId implements Serializable {
     @Column(name = "product")

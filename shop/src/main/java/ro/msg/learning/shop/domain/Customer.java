@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
@@ -24,24 +23,20 @@ public class Customer {
     @UuidGenerator
     private UUID customerId;
 
-    @NotNull
     @Column(name = "firstname")
     private String firstName;
 
-    @NotNull
     @Column(name = "lastname")
     private String lastName;
 
-    @NotNull
     @Column(name = "username")
     private String userName;
 
-    @NotNull
+
     @Column(name = "emailaddress")
     private String email;
 
-    @NotNull
-    @Column(name = "password")
+
     private String password;
 
     @OneToMany

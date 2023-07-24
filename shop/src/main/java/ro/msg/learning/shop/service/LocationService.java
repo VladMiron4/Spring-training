@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.Location;
 import ro.msg.learning.shop.dto.LocationDto;
-import ro.msg.learning.shop.exception.LocationNotFoundException;
+import ro.msg.learning.shop.exception.NotFoundException;
 import ro.msg.learning.shop.mapper.LocationMapper;
 import ro.msg.learning.shop.repository.LocationRepository;
 
@@ -41,9 +41,9 @@ public class LocationService {
     }
 
 
-    public String putLocation(UUID locationId, LocationDto locationDto) throws LocationNotFoundException {
+    public String putLocation(UUID locationId, LocationDto locationDto) throws NotFoundException {
         if (locationRepository.findById(locationId).isEmpty()) {
-            throw new LocationNotFoundException();
+            throw new NotFoundException(LOCATION_NOT_FOUND);
         }
         Location foundLocation = locationRepository.findById(locationId).get();
 
@@ -67,9 +67,9 @@ public class LocationService {
     }
 
 
-    public String deleteLocation(UUID locationId) throws LocationNotFoundException {
+    public String deleteLocation(UUID locationId) throws NotFoundException {
         if (locationRepository.findById(locationId).isEmpty()) {
-            throw new LocationNotFoundException();
+            throw new NotFoundException(LOCATION_NOT_FOUND);
         }
         locationRepository.delete(locationRepository.findById(locationId).get());
         if (locationRepository.findById(locationId).isPresent())

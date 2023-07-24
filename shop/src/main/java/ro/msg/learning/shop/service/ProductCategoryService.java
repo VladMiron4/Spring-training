@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.domain.ProductCategory;
 import ro.msg.learning.shop.dto.ProductCategoryDto;
-import ro.msg.learning.shop.exception.ProductCategoryNotFoundException;
-import ro.msg.learning.shop.exception.ProductNotFoundException;
+import ro.msg.learning.shop.exception.BadRequestException;
+import ro.msg.learning.shop.exception.NotFoundException;
 import ro.msg.learning.shop.mapper.ProductCategoryMapper;
 import ro.msg.learning.shop.message.Messages;
 import ro.msg.learning.shop.repository.ProductCategoryRepository;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static ro.msg.learning.shop.message.Messages.PATCHED_SUCCESSFULLY;
+import static ro.msg.learning.shop.message.Messages.*;
 
 @Service
 @AllArgsConstructor
@@ -42,10 +42,10 @@ public class ProductCategoryService {
     }
 
 
-    public String deleteProductCategory(UUID productCategoryId) throws ProductCategoryNotFoundException {
+    public String deleteProductCategory(UUID productCategoryId) throws NotFoundException {
 
         if (productCategoryRepository.findById(productCategoryId).isEmpty()) {
-            throw new ProductCategoryNotFoundException();
+            throw new NotFoundException(PRODUCT_NOT_FOUND);
         }
         ProductCategory foundProductCategory = productCategoryRepository.findById(productCategoryId).get();
         productCategoryRepository.delete(foundProductCategory);
@@ -55,9 +55,9 @@ public class ProductCategoryService {
     }
 
 
-    public String putProductCategory(UUID productCategoryId, ProductCategoryDto productCategoryDto) throws ProductNotFoundException {
+    public String putProductCategory(UUID productCategoryId, ProductCategoryDto productCategoryDto) throws BadRequestException {
         if (productCategoryRepository.findById(productCategoryId).isEmpty()) {
-            throw new ProductNotFoundException();
+            throw new BadRequestException(BAD_PRODUCT);
         }
         ProductCategory foundProductCategory = productCategoryRepository.findById(productCategoryId).get();
         if (productCategoryDto.getDescription() != null && !productCategoryDto.getDescription().isEmpty()) {

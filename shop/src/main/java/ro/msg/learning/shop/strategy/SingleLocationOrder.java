@@ -10,9 +10,7 @@ import ro.msg.learning.shop.domain.key.OrderDetailId;
 import ro.msg.learning.shop.domain.key.StockId;
 import ro.msg.learning.shop.dto.CreateOrderDto;
 import ro.msg.learning.shop.dto.OrderDto;
-import ro.msg.learning.shop.exception.LocationNotFoundException;
-import ro.msg.learning.shop.exception.NegativeQuantityException;
-import ro.msg.learning.shop.exception.ProductNotFoundException;
+import ro.msg.learning.shop.exception.BadRequestException;
 import ro.msg.learning.shop.mapper.OrderMapper;
 import ro.msg.learning.shop.repository.OrderRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
@@ -22,6 +20,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static ro.msg.learning.shop.message.Messages.*;
 
 
 @AllArgsConstructor
@@ -36,22 +36,22 @@ public class SingleLocationOrder implements OrderLocationStrategy {
 
 
     @Override
-    public OrderDto create(CreateOrderDto createOrderDto) throws NegativeQuantityException, ProductNotFoundException, LocationNotFoundException {
+    public OrderDto create(CreateOrderDto createOrderDto) throws BadRequestException {
         List<UUID> firstProductLocations = stockRepository.findSuitableLocation(createOrderDto.getOrderProductDtoList().get(0).getProductId(), createOrderDto.getOrderProductDtoList().get(0).getQuantity());
 
         for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
             if (createOrderDto.getOrderProductDtoList().get(i).getQuantity() < 0) {
-                throw new NegativeQuantityException();
+                throw new BadRequestException(NEGATIVE_QUANTITY_EXCEPTION);
             }
         }
         for (int i = 1; i < createOrderDto.getOrderProductDtoList().size(); i++) {
             if (productRepository.findById(createOrderDto.getOrderProductDtoList().get(i).getProductId()).isEmpty()) {
-                throw new ProductNotFoundException();
+                throw new BadRequestException(BAD_PRODUCT);
             }
             List<UUID> orderedProductLocations = stockRepository.findSuitableLocation(createOrderDto.getOrderProductDtoList().get(i).getProductId(), createOrderDto.getOrderProductDtoList().get(i).getQuantity());
             firstProductLocations.retainAll(orderedProductLocations);
         }
-        if (firstProductLocations.isEmpty()) throw new LocationNotFoundException();
+        if (firstProductLocations.isEmpty()) throw new BadRequestException(BAD_LOCATION);
         OrderDto orderDto = OrderDto.builder()
                 .date(LocalDate.now())
                 .addressCity(createOrderDto.getAddressCity())
@@ -61,9 +61,8 @@ public class SingleLocationOrder implements OrderLocationStrategy {
                 .customerId(createOrderDto.getCustomerId())
                 .build();
         UUID locationId = firstProductLocations.get(0);
-        List<OrderDetail>orderDetails=new ArrayList<>();
+        List<OrderDetail> orderDetails = new ArrayList<>();
         Order order = orderMapper.toEntity(orderDto);
-
         createOrderDto.getOrderProductDtoList().forEach(orderProductDto -> {
             OrderDetailId orderDetailId = OrderDetailId.builder()
                     .orderId(null)

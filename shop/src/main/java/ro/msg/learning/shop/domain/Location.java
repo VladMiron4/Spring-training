@@ -25,8 +25,7 @@ public class Location {
     @Column(name = "id")
     @UuidGenerator
     private UUID locationId;
-    @NotNull
-    @Column(name = "name")
+
     private String name;
     @NotNull
     @Column(name = "address_city")

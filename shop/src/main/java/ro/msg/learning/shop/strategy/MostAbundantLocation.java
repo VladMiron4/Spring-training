@@ -9,9 +9,7 @@ import ro.msg.learning.shop.domain.key.OrderDetailId;
 import ro.msg.learning.shop.domain.key.StockId;
 import ro.msg.learning.shop.dto.CreateOrderDto;
 import ro.msg.learning.shop.dto.OrderDto;
-import ro.msg.learning.shop.exception.LocationNotFoundException;
-import ro.msg.learning.shop.exception.NegativeQuantityException;
-import ro.msg.learning.shop.exception.ProductNotFoundException;
+import ro.msg.learning.shop.exception.BadRequestException;
 import ro.msg.learning.shop.mapper.OrderMapper;
 import ro.msg.learning.shop.repository.OrderRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
@@ -21,6 +19,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static ro.msg.learning.shop.message.Messages.BAD_PRODUCT;
+import static ro.msg.learning.shop.message.Messages.NEGATIVE_QUANTITY_EXCEPTION;
 
 @AllArgsConstructor
 @ConditionalOnProperty(name = "${strategy}", havingValue = "abundant")
@@ -32,11 +33,11 @@ public class MostAbundantLocation implements OrderLocationStrategy {
     private final OrderMapper orderMapper;
 
     @Override
-    public OrderDto create(CreateOrderDto createOrderDto) throws NegativeQuantityException, ProductNotFoundException, LocationNotFoundException {
+    public OrderDto create(CreateOrderDto createOrderDto) throws BadRequestException {
 
         for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
             if (createOrderDto.getOrderProductDtoList().get(i).getQuantity() < 0) {
-                throw new NegativeQuantityException();
+                throw new BadRequestException(NEGATIVE_QUANTITY_EXCEPTION);
             }
         }
         List<OrderDetail> orderDetails = new ArrayList<>();
@@ -52,7 +53,7 @@ public class MostAbundantLocation implements OrderLocationStrategy {
 
         for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
             if (productRepository.findById(createOrderDto.getOrderProductDtoList().get(i).getProductId()).isEmpty()) {
-                throw new ProductNotFoundException();
+                throw new BadRequestException(BAD_PRODUCT);
             }
 
             List<UUID> orderedProductLocations = stockRepository.findSuitableLocation(createOrderDto.getOrderProductDtoList().get(i).getProductId(), createOrderDto.getOrderProductDtoList().get(i).getQuantity());
