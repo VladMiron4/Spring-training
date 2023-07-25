@@ -18,12 +18,12 @@ import java.util.UUID;
 public class Order {
 
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderDetail> orderDetail;
+
     @Id
     @Column(name = "id")
     @UuidGenerator
     private UUID orderId;
+
     @Column(name = "customer")
     private UUID customerId;
 
@@ -46,4 +46,6 @@ public class Order {
     @MapsId("customerId")
     @JoinColumn(name = "id")
     private Customer Customer;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetail;
 }

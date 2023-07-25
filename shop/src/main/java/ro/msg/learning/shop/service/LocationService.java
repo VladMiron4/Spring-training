@@ -36,7 +36,7 @@ public class LocationService {
 
     public LocationDto createLocation(LocationDto locationDto) {
         Location savedLocation = locationRepository.save(locationMapper.toEntity(locationDto));
-        locationDto.setLocationId(savedLocation.getLocationId());
+        locationDto.setLocationId(savedLocation.getLocationId().toString());
         return locationDto;
     }
 

@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ProductCategoryController {
 
 
-    ProductCategoryService productCategoryService;
+    private final ProductCategoryService productCategoryService;
 
     @PostMapping
     public ResponseEntity<ProductCategoryDto> create(@RequestBody ProductCategoryDto productCategoryDto) {

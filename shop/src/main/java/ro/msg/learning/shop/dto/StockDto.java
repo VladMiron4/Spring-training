@@ -13,7 +13,8 @@ import ro.msg.learning.shop.domain.key.StockId;
 @NoArgsConstructor
 @Builder
 public class StockDto {
-    private StockId stockId;
+    private String productId;
+    private String locationId;
     private Integer quantity;
     private Product product;
     private Location location;

@@ -2,10 +2,7 @@ package ro.msg.learning.shop.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.math.BigDecimal;
@@ -18,6 +15,7 @@ import java.util.UUID;
 @Table(name = "product")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
@@ -49,7 +47,4 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Stock> stockList;
 
-    public Product() {
-
-    }
 }

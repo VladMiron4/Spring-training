@@ -44,14 +44,11 @@ public class StockService {
         Location foundLocation = locationRepository.findById(locationId).get();
         Product foundProduct = productRepository.findById(productId).get();
 
-        StockId stockId = StockId.builder()
-                .productId(foundProduct.getProductId())
-                .locationId(foundLocation.getLocationId())
-                .build();
         StockDto stockDto = StockDto.builder()
                 .location(foundLocation)
                 .product(foundProduct)
-                .stockId(stockId)
+                .productId(productId.toString())
+                .locationId(locationId.toString())
                 .quantity(quantity)
                 .build();
         Stock stock = stockMapper.toEntity(stockDto);

@@ -3,18 +3,18 @@ package ro.msg.learning.shop.strategy;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-import ro.msg.learning.shop.domain.Order;
-import ro.msg.learning.shop.domain.OrderDetail;
-import ro.msg.learning.shop.domain.Stock;
+import ro.msg.learning.shop.domain.*;
 import ro.msg.learning.shop.domain.key.OrderDetailId;
 import ro.msg.learning.shop.domain.key.StockId;
 import ro.msg.learning.shop.dto.CreateOrderDto;
 import ro.msg.learning.shop.dto.OrderDto;
+import ro.msg.learning.shop.dto.OrderProductDto;
 import ro.msg.learning.shop.exception.BadRequestException;
+import ro.msg.learning.shop.mapper.LocationMapper;
+import ro.msg.learning.shop.mapper.OrderDetailMapper;
 import ro.msg.learning.shop.mapper.OrderMapper;
-import ro.msg.learning.shop.repository.OrderRepository;
-import ro.msg.learning.shop.repository.ProductRepository;
-import ro.msg.learning.shop.repository.StockRepository;
+import ro.msg.learning.shop.mapper.StockMapper;
+import ro.msg.learning.shop.repository.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,60 +30,24 @@ import static ro.msg.learning.shop.message.Messages.*;
 public class SingleLocationOrder implements OrderLocationStrategy {
 
     private final StockRepository stockRepository;
-    private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
+    private final LocationRepository locationRepository;
+
 
 
     @Override
-    public OrderDto create(CreateOrderDto createOrderDto) throws BadRequestException {
-        List<UUID> firstProductLocations = stockRepository.findSuitableLocation(createOrderDto.getOrderProductDtoList().get(0).getProductId(), createOrderDto.getOrderProductDtoList().get(0).getQuantity());
-
-        for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
-            if (createOrderDto.getOrderProductDtoList().get(i).getQuantity() < 0) {
-                throw new BadRequestException(NEGATIVE_QUANTITY_EXCEPTION);
-            }
-        }
-        for (int i = 1; i < createOrderDto.getOrderProductDtoList().size(); i++) {
-            if (productRepository.findById(createOrderDto.getOrderProductDtoList().get(i).getProductId()).isEmpty()) {
-                throw new BadRequestException(BAD_PRODUCT);
-            }
-            List<UUID> orderedProductLocations = stockRepository.findSuitableLocation(createOrderDto.getOrderProductDtoList().get(i).getProductId(), createOrderDto.getOrderProductDtoList().get(i).getQuantity());
+    public List<Location> getLocation(CreateOrderDto createOrderDto) throws BadRequestException {
+        OrderProductDto firstProduct = createOrderDto.getOrderProductDtoList().get(0);
+        List<UUID> firstProductLocations = stockRepository.findSuitableLocation(UUID.fromString(firstProduct.getProductId()), firstProduct.getQuantity());
+        List<OrderProductDto> orderProductDtos = createOrderDto.getOrderProductDtoList();
+        for (OrderProductDto orderProductDto : orderProductDtos) {
+            List<UUID> orderedProductLocations = stockRepository.findSuitableLocation(UUID.fromString(orderProductDto.getProductId()), orderProductDto.getQuantity());
             firstProductLocations.retainAll(orderedProductLocations);
         }
-        if (firstProductLocations.isEmpty()) throw new BadRequestException(BAD_LOCATION);
-        OrderDto orderDto = OrderDto.builder()
-                .date(LocalDate.now())
-                .addressCity(createOrderDto.getAddressCity())
-                .addressCountry(createOrderDto.getAddressCountry())
-                .adressStreet(createOrderDto.getAddressStreet())
-                .adressCounty(createOrderDto.getAddressCounty())
-                .customerId(createOrderDto.getCustomerId())
-                .build();
+
+        List<Location> locationList=new ArrayList<>();
         UUID locationId = firstProductLocations.get(0);
-        List<OrderDetail> orderDetails = new ArrayList<>();
-        Order order = orderMapper.toEntity(orderDto);
-        createOrderDto.getOrderProductDtoList().forEach(orderProductDto -> {
-            OrderDetailId orderDetailId = OrderDetailId.builder()
-                    .orderId(null)
-                    .productId(orderProductDto.getProductId())
-                    .build();
-            OrderDetail orderDetail = OrderDetail.builder()
-                    .orderDetailId(orderDetailId)
-                    .quantity(orderProductDto.getQuantity())
-                    .locationId(locationId)
-                    .order(order)
-                    .product(productRepository.findById(orderProductDto.getProductId()).get())
-                    .build();
-            orderDetails.add(orderDetail);
-            StockId stockId = StockId.builder().locationId(locationId).productId(orderProductDto.getProductId()).build();
-            Stock stock = stockRepository.findById(stockId).get();
-            stock.setQuantity(stock.getQuantity() - orderProductDto.getQuantity());
-            stockRepository.save(stock);
-        });
-        order.setOrderDetail(orderDetails);
-        orderRepository.save(order);
-        orderDto.setOrderId(order.getOrderId());
-        return orderDto;
+        Location location=locationRepository.findById(locationId).get();
+        locationList.add(location);
+        return locationList;
     }
 }

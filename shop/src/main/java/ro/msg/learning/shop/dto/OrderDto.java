@@ -11,11 +11,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderDto {
-    private UUID orderId;
-    private UUID customerId;
+    private String orderId;
+    private String customerId;
     private String addressCity;
     private String addressCountry;
-    private String adressStreet;
-    private String adressCounty;
+    private String addressStreet;
+    private String addressCounty;
     private LocalDate date;
 }

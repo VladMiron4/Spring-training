@@ -11,4 +11,5 @@ public class Messages {
     public final static String BAD_PRODUCT = "Bad product was introduced.";
     public final static String BAD_LOCATION = "Bad location was introduced";
     public final static String BAD_PRODUCT_CATEGORY = "Bad product category was introduced";
+    public final static String BAD_USER = "We could not find a user matching the data";
 }

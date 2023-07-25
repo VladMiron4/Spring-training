@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class CreateOrderDto {
-    private UUID customerId;
+    private String customerId;
     private String addressCity;
     private String addressCountry;
     private String addressStreet;

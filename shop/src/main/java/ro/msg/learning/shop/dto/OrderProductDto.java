@@ -10,6 +10,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class OrderProductDto {
-    private UUID productId;
+    private String productId;
     private Integer quantity;
 }

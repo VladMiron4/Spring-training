@@ -1,10 +1,7 @@
 package ro.msg.learning.shop.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Setter
 @Table(name = "customer")
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Customer {
 
@@ -39,8 +37,10 @@ public class Customer {
 
     private String password;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id")
     private List<Order> order;
+    @OneToMany(mappedBy = "Customer")
+    private List<Order>orders;
 
 }

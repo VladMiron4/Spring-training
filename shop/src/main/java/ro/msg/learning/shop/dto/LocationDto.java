@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class LocationDto {
-    private UUID locationId;
+    private String locationId;
     private String name;
     private String addressCity;
     private String addressCountry;

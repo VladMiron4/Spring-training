@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductCategoryDto {
-    private UUID productCategoryId;
+    private String productCategoryId;
     private String name;
     private String description;
 }

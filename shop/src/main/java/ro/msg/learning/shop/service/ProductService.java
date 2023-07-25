@@ -42,11 +42,11 @@ public class ProductService {
 
     public ProductDto createProduct(ProductDto productDto) throws BadRequestException {
 
-        if (productCategoryRepository.findById(productDto.getCategory()).isEmpty()) {
+        if (productCategoryRepository.findById(UUID.fromString(productDto.getCategory())).isEmpty()) {
             throw new BadRequestException(BAD_PRODUCT_CATEGORY);
         }
-        ProductCategory productCategory = productCategoryRepository.findById(productDto.getCategory()).get();
-        productDto.setCategory(productCategory.getProductCategoryId());
+        ProductCategory productCategory = productCategoryRepository.findById(UUID.fromString(productDto.getCategory())).get();
+        productDto.setCategory(productCategory.getProductCategoryId().toString());
         productRepository.save(productMapper.toEntity(productDto));
         return productDto;
     }
@@ -87,7 +87,7 @@ public class ProductService {
         }
         Product foundProduct = productRepository.findById(productId).get();
         if (productDto.getCategory() != null) {
-            foundProduct.setCategory(productDto.getCategory());
+            foundProduct.setCategory(UUID.fromString(productDto.getCategory()));
         }
         if (productDto.getName() != null && !productDto.getName().equals("")) {
             foundProduct.setName(productDto.getName());

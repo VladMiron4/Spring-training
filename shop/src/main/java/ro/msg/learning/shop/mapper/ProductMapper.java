@@ -4,13 +4,15 @@ import org.springframework.stereotype.Component;
 import ro.msg.learning.shop.domain.Product;
 import ro.msg.learning.shop.dto.ProductDto;
 
+import java.util.UUID;
+
 @Component
 public class ProductMapper {
     public ProductDto toDto(Product product) {
 
         return ProductDto.builder()
-                .productId(product.getProductId())
-                .category(product.getCategory())
+                .productId(product.getProductId().toString())
+                .category(product.getCategory().toString())
                 .price(product.getPrice())
                 .imageUrl(product.getImageUrl())
                 .supplier(product.getSupplier())
@@ -21,8 +23,7 @@ public class ProductMapper {
 
     public Product toEntity(ProductDto productDto) {
         return Product.builder()
-                .productId(productDto.getProductId())
-                .category(productDto.getCategory())
+                .category(UUID.fromString(productDto.getCategory()))
                 .name(productDto.getName())
                 .supplier(productDto.getSupplier())
                 .price(productDto.getPrice())

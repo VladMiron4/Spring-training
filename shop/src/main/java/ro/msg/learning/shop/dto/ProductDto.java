@@ -11,11 +11,11 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class ProductDto {
-    private UUID productId;
+    private String productId;
     private String name;
     private BigDecimal price;
     private Double weight;
     private String imageUrl;
-    private UUID category;
+    private String category;
     private String supplier;
 }

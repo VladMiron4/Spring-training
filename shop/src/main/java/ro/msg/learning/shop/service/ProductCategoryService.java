@@ -26,8 +26,9 @@ public class ProductCategoryService {
 
 
     public ProductCategoryDto createProductCategory(ProductCategoryDto productCategoryDto) {
-
-        productCategoryRepository.save(productCategoryMapper.toEntity(productCategoryDto));
+        ProductCategory productCategory = productCategoryMapper.toEntity(productCategoryDto);
+        productCategoryRepository.save(productCategory);
+        productCategoryDto.setProductCategoryId(productCategory.getProductCategoryId().toString());
         return productCategoryDto;
     }
 
