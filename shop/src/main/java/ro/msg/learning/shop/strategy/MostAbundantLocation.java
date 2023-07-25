@@ -41,7 +41,7 @@ public class MostAbundantLocation implements OrderLocationStrategy {
     }
 
     @Override
-    public List<Location> getLocation(CreateOrderDto createOrderDto) {
+    public List<Location> getLocation(CreateOrderDto createOrderDto) throws BadRequestException {
         List<OrderProductDto> createOrderDtoList = createOrderDto.getOrderProductDtoList();
         List<Location>locationList=new ArrayList<>();
         for (OrderProductDto orderProductDto : createOrderDtoList) {

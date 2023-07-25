@@ -15,8 +15,6 @@ import ro.msg.learning.shop.repository.*;
 public class StrategyConfiguration {
     private final StockRepository stockRepository;
     private final LocationRepository locationRepository;
-
-
     @Value("${strategy}")
     private String strategy;
 

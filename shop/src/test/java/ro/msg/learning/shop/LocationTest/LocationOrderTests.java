@@ -82,21 +82,49 @@ public class LocationOrderTests {
         Customer customer=Customer.builder().customerId(UUID.randomUUID()).build();
         customer.setOrder(new ArrayList<Order>());
         OrderDto orderDto=OrderDto.builder().customerId(customer.getCustomerId().toString()).build();
+        CreateOrderDto createOrderDto= CreateOrderDto.builder()
+                .orderProductDtoList(orderProductDtoList)
+                .customerId(customer.getCustomerId().toString())
+                .build();
         List<UUID>firstProductLocations=new ArrayList<>();
         firstProductLocations.add(location.getLocationId());
-        Order order=Order.builder().orderId(UUID.randomUUID()).customerId(customer.getCustomerId()).build();
-        lenient().when(productRepository.findById(product.getProductId())).thenReturn(Optional.of(product));
+        List<Location>locationList=new ArrayList<>();
+        locationList.add(location);
         lenient().when(stockRepository.findSuitableLocation(product.getProductId(),orderProductDtoList.get(0).getQuantity())).thenReturn(firstProductLocations);
-        lenient().when(customerRepository.findById(customer.getCustomerId())).thenReturn(Optional.of(customer));
-        lenient().when(productRepository.findById(UUID.fromString(orderProductDtoList.get(0).getProductId()))).thenReturn(Optional.of(product));
-        lenient().when(stockRepository.findById(stockId)).thenReturn(Optional.of(stock));
-        lenient().when(orderMapper.toEntity(ArgumentMatchers.any())).thenReturn(order);
-        orderDto.setOrderId(order.getOrderId().toString());
+        lenient().when(locationRepository.findById(location.getLocationId())).thenReturn(Optional.of(location));
+        assertEquals(singleLocationOrder.getLocation(createOrderDto),locationList);
     }
 
 
     @Test
     void MostAbundantProductHasBeenOrderedSuccessfully() {
-
+        List<OrderProductDto> orderProductDtoList =new ArrayList<>();
+        Product product=Product.builder().productId(UUID.randomUUID())
+                .build();
+        Location location=Location.builder().locationId(UUID.randomUUID()).build();
+        StockId stockId=new StockId(product.getProductId(),location.getLocationId());
+        Stock stock=Stock.builder()
+                .Id(stockId)
+                .quantity(5)
+                .build();
+        orderProductDtoList.add(OrderProductDto.builder()
+                .quantity(1)
+                .productId(product.getProductId().toString())
+                .build());
+        Customer customer=Customer.builder().customerId(UUID.randomUUID()).build();
+        customer.setOrder(new ArrayList<Order>());
+        OrderDto orderDto=OrderDto.builder().customerId(customer.getCustomerId().toString()).build();
+        CreateOrderDto createOrderDto= CreateOrderDto.builder()
+                .orderProductDtoList(orderProductDtoList)
+                .customerId(customer.getCustomerId().toString())
+                .build();
+        List<UUID>firstProductLocations=new ArrayList<>();
+        firstProductLocations.add(location.getLocationId());
+        List<Location>locationList=new ArrayList<>();
+        locationList.add(location);
+        lenient().when(stockRepository.findSuitableLocation(product.getProductId(),orderProductDtoList.get(0).getQuantity())).thenReturn(firstProductLocations);
+        lenient().when(locationRepository.findById(location.getLocationId())).thenReturn(Optional.of(location));
+        lenient().when(stockRepository.findById(stockId)).thenReturn(Optional.of(stock));
+        assertEquals(mostAbundantLocation.getLocation(createOrderDto),locationList);
     }
 }
