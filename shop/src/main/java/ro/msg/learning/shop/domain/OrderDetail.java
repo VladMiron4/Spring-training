@@ -20,7 +20,6 @@ public class OrderDetail {
     @EmbeddedId
     private OrderDetailId orderDetailId;
 
-
     private Integer quantity;
 
     @Column(name = "shippedfrom")

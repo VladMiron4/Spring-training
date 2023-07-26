@@ -22,9 +22,11 @@ import ro.msg.learning.shop.strategy.OrderLocationStrategy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 import static ro.msg.learning.shop.message.Messages.*;
 import static ro.msg.learning.shop.message.Messages.BAD_PRODUCT;
 
@@ -41,26 +43,26 @@ public class OrderService {
     private StockMapper stockMapper;
 
     public OrderDto create(CreateOrderDto createOrderDto) {
+        List<OrderProductDto>orderProductDtoList = createOrderDto.getOrderProductDtoList();
+        Optional<Product> foundProduct=productRepository.findById(UUID.fromString(orderProductDtoList.get(0).getProductId()));
         if (customerRepository.findById(UUID.fromString(createOrderDto.getCustomerId())).isEmpty()) {
             throw new BadRequestException(BAD_USER);
         }
 
-        if (productRepository.findById(UUID.fromString(createOrderDto.getOrderProductDtoList().get(0).getProductId())).isEmpty()) {
+        if (foundProduct.isEmpty()) {
             throw new BadRequestException(BAD_PRODUCT);
         }
-
-        for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
-            if (createOrderDto.getOrderProductDtoList().get(i).getQuantity() < 0) {
+        for (OrderProductDto orderProductDto : orderProductDtoList) {
+            if (orderProductDto.getQuantity()<0){
                 throw new BadRequestException(NEGATIVE_QUANTITY_EXCEPTION);
             }
         }
-        for (int i = 0; i < createOrderDto.getOrderProductDtoList().size(); i++) {
-            if (productRepository.findById(UUID.fromString(createOrderDto.getOrderProductDtoList().get(i).getProductId())).isEmpty()) {
+        for (OrderProductDto orderProductDto : orderProductDtoList) {
+            if (productRepository.findById(UUID.fromString(orderProductDto.getProductId())).isEmpty()) {
                 throw new BadRequestException(BAD_PRODUCT);
             }
         }
         OrderDto orderDto=orderMapper.mapCreateOrderToDto(createOrderDto);
-        List<OrderProductDto>orderProductDtoList = createOrderDto.getOrderProductDtoList();
         orderDto.setDate(LocalDate.now());
         List<Location> locations= orderLocationStrategy.getLocation(createOrderDto);
         Customer customer = customerRepository.findById(UUID.fromString(createOrderDto.getCustomerId())).get();

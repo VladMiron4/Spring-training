@@ -21,7 +21,6 @@ import java.util.UUID;
 import static ro.msg.learning.shop.message.Messages.*;
 
 @AllArgsConstructor
-@ConditionalOnProperty(name = "${strategy}", havingValue = "abundant")
 public class MostAbundantLocation implements OrderLocationStrategy {
 
     private final StockRepository stockRepository;
@@ -30,6 +29,9 @@ public class MostAbundantLocation implements OrderLocationStrategy {
 
     private Location getMaximumStockLocation(List<UUID> orderedProductLocations, OrderProductDto orderProductDto) {
         Stock maximumStock = Stock.builder().quantity(0).build();
+        if (orderedProductLocations.size()==0){
+            return Location.builder().build();
+        }
         for (UUID orderedProductLocation : orderedProductLocations) {
             StockId stockId = StockId.builder().locationId(orderedProductLocation)
                     .productId(UUID.fromString(orderProductDto.getProductId()))
@@ -48,7 +50,9 @@ public class MostAbundantLocation implements OrderLocationStrategy {
             List<UUID> orderedProductLocations = stockRepository.findSuitableLocation(UUID.fromString(orderProductDto.getProductId()),
                     orderProductDto.getQuantity());
             Location location=this.getMaximumStockLocation(orderedProductLocations,orderProductDto);
-            locationList.add(location);
+            if (location.getLocationId()!=null) {
+                locationList.add(location);
+            }
         }
         return locationList;
     }

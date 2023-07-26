@@ -41,23 +41,11 @@ public class LocationOrderTests {
     @Mock
     private StockRepository stockRepository;
     @Mock
-    private ProductRepository productRepository;
-    @Mock
-    private OrderRepository orderRepository;
-    @Mock
-    private OrderMapper orderMapper;
-    @Mock
-    private CustomerRepository customerRepository;
-    @Mock
     private LocationRepository locationRepository;
-    @Mock
-    private ProductCategoryRepository productCategoryRepository;
-
     @InjectMocks
     private SingleLocationOrder singleLocationOrder;
     @InjectMocks
     private MostAbundantLocation mostAbundantLocation;
-    @InjectMocks CustomerService customerService;
     @BeforeEach
     public void initUseCase(){
         singleLocationOrder=new SingleLocationOrder(stockRepository,locationRepository);
@@ -113,7 +101,6 @@ public class LocationOrderTests {
                 .build());
         Customer customer=Customer.builder().customerId(UUID.randomUUID()).build();
         customer.setOrder(new ArrayList<Order>());
-        OrderDto orderDto=OrderDto.builder().customerId(customer.getCustomerId().toString()).build();
         CreateOrderDto createOrderDto= CreateOrderDto.builder()
                 .orderProductDtoList(orderProductDtoList)
                 .customerId(customer.getCustomerId().toString())
@@ -126,5 +113,64 @@ public class LocationOrderTests {
         lenient().when(locationRepository.findById(location.getLocationId())).thenReturn(Optional.of(location));
         lenient().when(stockRepository.findById(stockId)).thenReturn(Optional.of(stock));
         assertEquals(mostAbundantLocation.getLocation(createOrderDto),locationList);
+    }
+
+    @Test
+    void MostAbundantStrategyLocationNotFoundDueToInsufficientStock() {
+        List<OrderProductDto> orderProductDtoList =new ArrayList<>();
+        Product product=Product.builder().productId(UUID.randomUUID())
+                .build();
+        Location location=Location.builder().locationId(UUID.randomUUID()).build();
+        StockId stockId=new StockId(product.getProductId(),location.getLocationId());
+        Stock stock=Stock.builder()
+                .Id(stockId)
+                .quantity(5)
+                .build();
+        orderProductDtoList.add(OrderProductDto.builder()
+                .quantity(1)
+                .productId(product.getProductId().toString())
+                .build());
+        Customer customer=Customer.builder().customerId(UUID.randomUUID()).build();
+        customer.setOrder(new ArrayList<Order>());
+        CreateOrderDto createOrderDto= CreateOrderDto.builder()
+                .orderProductDtoList(orderProductDtoList)
+                .customerId(customer.getCustomerId().toString())
+                .build();
+        List<UUID>firstProductLocations=new ArrayList<>();
+        List<Location>locationList=new ArrayList<>();
+        lenient().when(stockRepository.findSuitableLocation(product.getProductId(),orderProductDtoList.get(0).getQuantity())).thenReturn(firstProductLocations);
+        lenient().when(locationRepository.findById(location.getLocationId())).thenReturn(Optional.of(location));
+        lenient().when(stockRepository.findById(stockId)).thenReturn(Optional.of(stock));
+        assertEquals(mostAbundantLocation.getLocation(createOrderDto),locationList);
+
+    }
+
+    @Test
+    void SingleLocationStrategyLocationNotFoundDueToInsufficientStock(){
+        List<OrderProductDto> orderProductDtoList =new ArrayList<>();
+        Product product=Product.builder().productId(UUID.randomUUID())
+                .build();
+        Location location=Location.builder().locationId(UUID.randomUUID()).build();
+        StockId stockId=new StockId(product.getProductId(),location.getLocationId());
+        Stock stock=Stock.builder()
+                .Id(stockId)
+                .quantity(5)
+                .build();
+        orderProductDtoList.add(OrderProductDto.builder()
+                .quantity(1)
+                .productId(product.getProductId().toString())
+                .build());
+        Customer customer=Customer.builder().customerId(UUID.randomUUID()).build();
+        customer.setOrder(new ArrayList<Order>());
+        CreateOrderDto createOrderDto= CreateOrderDto.builder()
+                .orderProductDtoList(orderProductDtoList)
+                .customerId(customer.getCustomerId().toString())
+                .build();
+        List<UUID>firstProductLocations=new ArrayList<>();
+        List<Location>locationList=new ArrayList<>();
+        lenient().when(stockRepository.findSuitableLocation(product.getProductId(),orderProductDtoList.get(0).getQuantity())).thenReturn(firstProductLocations);
+        lenient().when(locationRepository.findById(location.getLocationId())).thenReturn(Optional.of(location));
+        lenient().when(stockRepository.findById(stockId)).thenReturn(Optional.of(stock));
+        assertEquals(singleLocationOrder.getLocation(createOrderDto),locationList);
     }
 }

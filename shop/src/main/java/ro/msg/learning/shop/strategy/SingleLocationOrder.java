@@ -25,8 +25,6 @@ import static ro.msg.learning.shop.message.Messages.*;
 
 
 @AllArgsConstructor
-@Component
-@ConditionalOnProperty(name = "${strategy}", havingValue = "abundant")
 public class SingleLocationOrder implements OrderLocationStrategy {
 
     private final StockRepository stockRepository;
@@ -43,11 +41,18 @@ public class SingleLocationOrder implements OrderLocationStrategy {
             List<UUID> orderedProductLocations = stockRepository.findSuitableLocation(UUID.fromString(orderProductDto.getProductId()), orderProductDto.getQuantity());
             firstProductLocations.retainAll(orderedProductLocations);
         }
-
         List<Location> locationList=new ArrayList<>();
-        UUID locationId = firstProductLocations.get(0);
-        Location location=locationRepository.findById(locationId).get();
-        locationList.add(location);
+        UUID locationId=null;
+        Location location=null;
+        if (!firstProductLocations.isEmpty()) {
+             locationId = firstProductLocations.get(0);
+        }
+        if (locationId!=null) {
+             location = locationRepository.findById(locationId).get();
+        }
+        if (location!=null) {
+            locationList.add(location);
+        }
         return locationList;
     }
 }
